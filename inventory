@@ -7,6 +7,23 @@ if [ ! -f "$filename" ]; then
 fi
 
 case "$1" in
+  add)
+    read -r -p "Container: " container
+
+    while true; do
+      read -r -p "Item: " item
+      if [ -z "$item" ]; then
+        break
+      fi
+
+      read -r -p "Quantity: " quantity
+      if [ -z "$quantity" ]; then
+        quantity=1
+      fi
+
+      echo "$container	$quantity	$item" >> "$filename"
+    done
+    ;;
   *)
     echo "Usage: people <command>"
     echo "Commands:"
