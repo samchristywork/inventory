@@ -27,6 +27,9 @@ case "$1" in
   containers)
     cut -f1 "$filename" | sort | uniq -c
     ;;
+  search)
+    fzf < "$filename"
+    ;;
   *)
     echo "Usage: people <command>"
     echo "Commands:"
