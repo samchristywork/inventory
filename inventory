@@ -24,6 +24,9 @@ case "$1" in
       echo "$container	$quantity	$item" >> "$filename"
     done
     ;;
+  containers)
+    cut -f1 "$filename" | sort | uniq -c
+    ;;
   *)
     echo "Usage: people <command>"
     echo "Commands:"
