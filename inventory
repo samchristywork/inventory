@@ -9,6 +9,10 @@ fi
 case "$1" in
   add)
     read -r -p "Container: " container
+    if [ -z "$container" ]; then
+      echo "Container cannot be empty"
+      exit 1
+    fi
 
     while true; do
       read -r -p "Item: " item
