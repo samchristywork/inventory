@@ -30,6 +30,9 @@ case "$1" in
   search)
     fzf < "$filename"
     ;;
+  edit)
+    $EDITOR "$filename"
+    ;;
   *)
     echo "Usage: people <command>"
     echo "Commands:"
