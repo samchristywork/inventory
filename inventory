@@ -34,6 +34,14 @@ case "$1" in
   search)
     fzf < "$filename"
     ;;
+  show)
+    cut -f1 "$filename" | sort | uniq | while read -r container; do
+      echo "$container"
+      grep "^$container	" "$filename" | cut -f3 | sort | uniq -c | while read -r line; do
+        echo "  $line"
+      done
+    done
+    ;;
   edit)
     $EDITOR "$filename"
     ;;
