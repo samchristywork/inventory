@@ -48,6 +48,11 @@ case "$1" in
   *)
     echo "Usage: people <command>"
     echo "Commands:"
+    echo "  add - Add an item to the inventory"
+    echo "  containers - List all containers"
+    echo "  search - Search the inventory"
+    echo "  show - Show the inventory"
+    echo "  edit - Edit the inventory"
     exit 1
     ;;
 esac
