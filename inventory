@@ -34,6 +34,9 @@ case "$1" in
   search)
     fzf < "$filename"
     ;;
+  count)
+    wc -l < "$filename"
+    ;;
   show)
     cut -f1 "$filename" | sort | uniq | while read -r container; do
       echo "$container"
@@ -51,6 +54,7 @@ case "$1" in
     echo "  add - Add an item to the inventory"
     echo "  containers - List all containers"
     echo "  search - Search the inventory"
+    echo "  count - Count the number of items in the inventory"
     echo "  show - Show the inventory"
     echo "  edit - Edit the inventory"
     exit 1
