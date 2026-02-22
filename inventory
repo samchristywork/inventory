@@ -75,7 +75,7 @@ case "$1" in
     $EDITOR "$filename"
     ;;
   *)
-    echo "Usage: people <command>"
+    echo "Usage: inventory <command>"
     echo "Commands:"
     echo "  add - Add an item to the inventory"
     echo "  checkout - Checkout an item from the inventory"
