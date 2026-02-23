@@ -72,7 +72,7 @@ case "$1" in
     done
     ;;
   edit)
-    $EDITOR "$filename"
+    ${EDITOR:-vi} "$filename"
     ;;
   *)
     echo "Usage: inventory <command>"
