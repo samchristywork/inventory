@@ -52,7 +52,7 @@ case "$1" in
     fi
 
     echo "$item	$in_or_out	$(date)" >> "$checkout_file"
-    cat "$checkout_file"
+    tail -1 "$checkout_file"
     ;;
   containers)
     cut -f1 "$filename" | sort | uniq -c
