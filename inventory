@@ -8,6 +8,12 @@ if [ ! -f "$filename" ]; then
 fi
 
 case "$1" in
+  checkout|search)
+    if ! command -v fzf &>/dev/null; then
+      echo "Error: fzf is not installed. Install it with your package manager."
+      exit 1
+    fi
+    ;;&
   add)
     read -r -p "Container: " container
     if [ -z "$container" ]; then
