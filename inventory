@@ -126,6 +126,17 @@ case "$1" in
     fi
     grep -Fxv "$line" "$filename" > "$filename.tmp" && mv "$filename.tmp" "$filename"
     ;;
+  history)
+    if [ ! -f "$checkout_file" ]; then
+      echo "No checkout history."
+      exit 0
+    fi
+    if [ -n "$2" ]; then
+      grep -Fi "$2" "$checkout_file"
+    else
+      cat "$checkout_file"
+    fi
+    ;;
   edit)
     ${EDITOR:-vi} "$filename"
     ;;
@@ -141,6 +152,7 @@ case "$1" in
     echo "  update - Update the quantity of an item"
     echo "  move - Move an item to a different container"
     echo "  remove - Remove an item from the inventory"
+    echo "  history - Show checkout history"
     echo "  edit - Edit the inventory"
     exit 1
     ;;
