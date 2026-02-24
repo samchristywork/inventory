@@ -8,7 +8,7 @@ if [ ! -f "$filename" ]; then
 fi
 
 case "$1" in
-  checkout|search|remove)
+  checkout|search|remove|update)
     if ! command -v fzf &>/dev/null; then
       echo "Error: fzf is not installed. Install it with your package manager."
       exit 1
@@ -76,6 +76,30 @@ case "$1" in
       done
     done
     ;;
+  update)
+    line=$(fzf < "$filename")
+    if [ -z "$line" ]; then
+      exit 1
+    fi
+
+    while true; do
+      read -r -p "New quantity: " quantity
+      if [ -z "$quantity" ]; then
+        quantity=1
+      fi
+      if [ "$quantity" -eq "$quantity" ] 2>/dev/null; then
+        break
+      fi
+      echo "Quantity must be a number"
+    done
+
+    container=$(echo "$line" | cut -f1)
+    item=$(echo "$line" | cut -f3)
+    new_line="$container	$quantity	$item"
+    grep -Fxv "$line" "$filename" > "$filename.tmp"
+    echo "$new_line" >> "$filename.tmp"
+    mv "$filename.tmp" "$filename"
+    ;;
   remove)
     line=$(fzf < "$filename")
     if [ -z "$line" ]; then
@@ -95,7 +119,8 @@ case "$1" in
     echo "  search - Search the inventory"
     echo "  count - Count the number of items in the inventory"
     echo "  show - Show the inventory"
-    echo "  remove - Remove an item from the inventory"
+    echo "  update - Update the quantity of an item"
+  echo "  remove - Remove an item from the inventory"
     echo "  edit - Edit the inventory"
     exit 1
     ;;
