@@ -63,7 +63,11 @@ case "$1" in
     cut -f1 "$filename" | sort | uniq -c
     ;;
   search)
-    fzf < "$filename"
+    if [ -n "$2" ]; then
+      grep -Fi "$2" "$filename"
+    else
+      fzf < "$filename"
+    fi
     ;;
   count)
     wc -l < "$filename"
