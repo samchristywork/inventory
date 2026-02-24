@@ -8,7 +8,7 @@ if [ ! -f "$filename" ]; then
 fi
 
 case "$1" in
-  checkout|search|remove|update)
+  checkout|search|remove|update|move)
     if ! command -v fzf &>/dev/null; then
       echo "Error: fzf is not installed. Install it with your package manager."
       exit 1
@@ -100,6 +100,25 @@ case "$1" in
     echo "$new_line" >> "$filename.tmp"
     mv "$filename.tmp" "$filename"
     ;;
+  move)
+    line=$(fzf < "$filename")
+    if [ -z "$line" ]; then
+      exit 1
+    fi
+
+    read -r -p "New container: " new_container
+    if [ -z "$new_container" ]; then
+      echo "Container cannot be empty"
+      exit 1
+    fi
+
+    quantity=$(echo "$line" | cut -f2)
+    item=$(echo "$line" | cut -f3)
+    new_line="$new_container	$quantity	$item"
+    grep -Fxv "$line" "$filename" > "$filename.tmp"
+    echo "$new_line" >> "$filename.tmp"
+    mv "$filename.tmp" "$filename"
+    ;;
   remove)
     line=$(fzf < "$filename")
     if [ -z "$line" ]; then
@@ -120,7 +139,8 @@ case "$1" in
     echo "  count - Count the number of items in the inventory"
     echo "  show - Show the inventory"
     echo "  update - Update the quantity of an item"
-  echo "  remove - Remove an item from the inventory"
+    echo "  move - Move an item to a different container"
+    echo "  remove - Remove an item from the inventory"
     echo "  edit - Edit the inventory"
     exit 1
     ;;
