@@ -146,6 +146,13 @@ case "$1" in
     awk -F'\t' -v old="$old_container" -v new="$new_container" 'BEGIN{OFS="\t"} $1 == old {$1 = new} {print}' "$filename" > "$filename.tmp"
     mv "$filename.tmp" "$filename"
     ;;
+  status)
+    if [ ! -f "$checkout_file" ]; then
+      echo "No checkout history."
+      exit 0
+    fi
+    awk -F'\t' '{key=$1 FS $2 FS $3; state[key]=$4} END {for (k in state) if (state[k]=="out") print k}' "$checkout_file" | sort
+    ;;
   history)
     if [ ! -f "$checkout_file" ]; then
       echo "No checkout history."
@@ -215,6 +222,7 @@ case "$1" in
     echo "  remove - Remove an item from the inventory"
     echo "  rename - Rename a container"
     echo "  history - Show checkout history"
+    echo "  status - Show currently checked out items"
     echo "  export - Export inventory as CSV or JSON"
     echo "  import - Import inventory from a CSV file"
     echo "  edit - Edit the inventory"
