@@ -8,7 +8,7 @@ if [ ! -f "$filename" ]; then
 fi
 
 case "$1" in
-  checkout|search|remove|update|move)
+  checkout|search|remove|update|move|rename)
     if ! command -v fzf &>/dev/null; then
       echo "Error: fzf is not installed. Install it with your package manager."
       exit 1
@@ -126,6 +126,21 @@ case "$1" in
     fi
     grep -Fxv "$line" "$filename" > "$filename.tmp" && mv "$filename.tmp" "$filename"
     ;;
+  rename)
+    old_container=$(cut -f1 "$filename" | sort | uniq | fzf)
+    if [ -z "$old_container" ]; then
+      exit 1
+    fi
+
+    read -r -p "New container name: " new_container
+    if [ -z "$new_container" ]; then
+      echo "Container name cannot be empty"
+      exit 1
+    fi
+
+    awk -F'\t' -v old="$old_container" -v new="$new_container" 'BEGIN{OFS="\t"} $1 == old {$1 = new} {print}' "$filename" > "$filename.tmp"
+    mv "$filename.tmp" "$filename"
+    ;;
   history)
     if [ ! -f "$checkout_file" ]; then
       echo "No checkout history."
@@ -152,6 +167,7 @@ case "$1" in
     echo "  update - Update the quantity of an item"
     echo "  move - Move an item to a different container"
     echo "  remove - Remove an item from the inventory"
+    echo "  rename - Rename a container"
     echo "  history - Show checkout history"
     echo "  edit - Edit the inventory"
     exit 1
