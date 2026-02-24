@@ -152,6 +152,47 @@ case "$1" in
       cat "$checkout_file"
     fi
     ;;
+  export)
+    case "$2" in
+      json)
+        echo "["
+        first=1
+        while IFS=$'\t' read -r container quantity item; do
+          [ "$first" -eq 1 ] && first=0 || echo ","
+          printf '  {"container":"%s","quantity":%s,"item":"%s"}' "$container" "$quantity" "$item"
+        done < "$filename"
+        echo ""
+        echo "]"
+        ;;
+      csv|"")
+        echo "container,quantity,item"
+        while IFS=$'\t' read -r container quantity item; do
+          echo "$container,$quantity,$item"
+        done < "$filename"
+        ;;
+      *)
+        echo "Usage: inventory export [csv|json]"
+        exit 1
+        ;;
+    esac
+    ;;
+  import)
+    if [ -z "$2" ]; then
+      echo "Usage: inventory import <file>"
+      exit 1
+    fi
+    if [ ! -f "$2" ]; then
+      echo "File not found: $2"
+      exit 1
+    fi
+    tail -n +2 "$2" | while IFS=',' read -r container quantity item; do
+      if [ "$quantity" -eq "$quantity" ] 2>/dev/null; then
+        echo "$container	$quantity	$item" >> "$filename"
+      else
+        echo "Skipping invalid line: $container,$quantity,$item"
+      fi
+    done
+    ;;
   edit)
     ${EDITOR:-vi} "$filename"
     ;;
@@ -169,6 +210,8 @@ case "$1" in
     echo "  remove - Remove an item from the inventory"
     echo "  rename - Rename a container"
     echo "  history - Show checkout history"
+    echo "  export - Export inventory as CSV or JSON"
+    echo "  import - Import inventory from a CSV file"
     echo "  edit - Edit the inventory"
     exit 1
     ;;
