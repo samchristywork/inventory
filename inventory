@@ -70,7 +70,8 @@ case "$1" in
     fi
     ;;
   count)
-    wc -l < "$filename"
+    echo "Entries: $(wc -l < "$filename")"
+    echo "Total quantity: $(awk -F'\t' '{sum += $2} END {print sum+0}' "$filename")"
     ;;
   show)
     cut -f1 "$filename" | sort | uniq | while read -r container; do
