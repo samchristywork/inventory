@@ -180,7 +180,7 @@ case "$1" in
       csv|"")
         echo "container,quantity,item"
         while IFS=$'\t' read -r container quantity item; do
-          echo "$container,$quantity,$item"
+          printf '"%s",%s,"%s"\n' "${container//\"/\"\"}" "$quantity" "${item//\"/\"\"}"
         done < "$filename"
         ;;
       *)
