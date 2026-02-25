@@ -101,7 +101,7 @@ case "$1" in
     container=$(echo "$line" | cut -f1)
     item=$(echo "$line" | cut -f3)
     new_line="$container	$quantity	$item"
-    grep -Fxv "$line" "$filename" > "$filename.tmp"
+    awk -v l="$line" 'BEGIN{done=0} !done && $0==l {done=1; next} {print}' "$filename" > "$filename.tmp"
     echo "$new_line" >> "$filename.tmp"
     mv "$filename.tmp" "$filename"
     ;;
@@ -120,7 +120,7 @@ case "$1" in
     quantity=$(echo "$line" | cut -f2)
     item=$(echo "$line" | cut -f3)
     new_line="$new_container	$quantity	$item"
-    grep -Fxv "$line" "$filename" > "$filename.tmp"
+    awk -v l="$line" 'BEGIN{done=0} !done && $0==l {done=1; next} {print}' "$filename" > "$filename.tmp"
     echo "$new_line" >> "$filename.tmp"
     mv "$filename.tmp" "$filename"
     ;;
@@ -129,7 +129,7 @@ case "$1" in
     if [ -z "$line" ]; then
       exit 1
     fi
-    grep -Fxv "$line" "$filename" > "$filename.tmp" && mv "$filename.tmp" "$filename"
+    awk -v l="$line" 'BEGIN{done=0} !done && $0==l {done=1; next} {print}' "$filename" > "$filename.tmp" && mv "$filename.tmp" "$filename"
     ;;
   rename)
     old_container=$(cut -f1 "$filename" | sort | uniq | fzf)
