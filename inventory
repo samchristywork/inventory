@@ -198,13 +198,23 @@ case "$1" in
       echo "File not found: $2"
       exit 1
     fi
-    tail -n +2 "$2" | while IFS=',' read -r container quantity item; do
-      if [ "$quantity" -eq "$quantity" ] 2>/dev/null; then
-        echo "$container	$quantity	$item" >> "$filename"
-      else
-        echo "Skipping invalid line: $container,$quantity,$item"
-      fi
-    done
+    python3 - "$2" "$filename" <<'PYEOF'
+import csv, sys
+with open(sys.argv[1], newline='') as f:
+    reader = csv.reader(f)
+    next(reader, None)
+    with open(sys.argv[2], 'a') as out:
+        for row in reader:
+            if len(row) < 3:
+                print(f"Skipping short line: {row}")
+                continue
+            container, quantity, item = row[0], row[1].strip(), row[2]
+            try:
+                int(quantity)
+                out.write(f"{container}\t{quantity}\t{item}\n")
+            except ValueError:
+                print(f"Skipping invalid quantity: {row}")
+PYEOF
     ;;
   edit)
     ${EDITOR:-vi} "$filename"
