@@ -16,6 +16,7 @@ case "$1" in
     ;;&
   add)
     read -r -p "Container: " container
+    container="${container//$'\t'/ }"
     if [ -z "$container" ]; then
       echo "Container cannot be empty"
       exit 1
@@ -23,6 +24,7 @@ case "$1" in
 
     while true; do
       read -r -p "Item: " item
+      item="${item//$'\t'/ }"
       if [ -z "$item" ]; then
         break
       fi
