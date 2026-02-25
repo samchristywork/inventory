@@ -165,13 +165,14 @@ case "$1" in
     fi
     ;;
   export)
+    json_escape() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g; s/\r/\\r/g'; }
     case "$2" in
       json)
         echo "["
         first=1
         while IFS=$'\t' read -r container quantity item; do
           [ "$first" -eq 1 ] && first=0 || echo ","
-          printf '  {"container":"%s","quantity":%s,"item":"%s"}' "$container" "$quantity" "$item"
+          printf '  {"container":"%s","quantity":%s,"item":"%s"}' "$(json_escape "$container")" "$quantity" "$(json_escape "$item")"
         done < "$filename"
         echo ""
         echo "]"
