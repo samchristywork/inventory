@@ -149,7 +149,7 @@ case "$1" in
       echo "No checkout history."
       exit 0
     fi
-    awk -F'\t' '{key=$1 FS $2 FS $3; state[key]=$4} END {for (k in state) if (state[k]=="out") print k}' "$checkout_file" | sort
+    awk -F'\t' '{key=$1 FS $2 FS $3; state[key]=$4} END {for (k in state) if (state[k]=="out") print k}' "$checkout_file" | sort | column -t -s $'\t'
     ;;
   history)
     if [ ! -f "$checkout_file" ]; then
@@ -157,9 +157,9 @@ case "$1" in
       exit 0
     fi
     if [ -n "$2" ]; then
-      grep -Fi "$2" "$checkout_file"
+      grep -Fi "$2" "$checkout_file" | column -t -s $'\t'
     else
-      cat "$checkout_file"
+      column -t -s $'\t' < "$checkout_file"
     fi
     ;;
   export)
