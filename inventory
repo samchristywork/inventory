@@ -227,7 +227,7 @@ PYEOF
   edit)
     ${EDITOR:-vi} "$filename"
     ;;
-  *)
+  help|--help|-h|"")
     echo "Usage: inventory <command>"
     echo "Commands:"
     echo "  add - Add an item to the inventory"
@@ -245,6 +245,10 @@ PYEOF
     echo "  export - Export inventory as CSV or JSON"
     echo "  import - Import inventory from a CSV file"
     echo "  edit - Edit the inventory"
+    ;;
+  *)
+    echo "Unknown command: $1"
+    echo "Run 'inventory help' for usage."
     exit 1
     ;;
 esac
