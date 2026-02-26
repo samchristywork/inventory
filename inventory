@@ -29,6 +29,24 @@ case "$1" in
         break
       fi
 
+      existing=$(awk -F'\t' -v c="$container" -v i="$item" '$1==c && $3==i {print $2; exit}' "$filename")
+      if [ -n "$existing" ]; then
+        echo "\"$item\" already exists in \"$container\" (quantity: $existing)."
+        read -r -p "Update quantity instead? [y/N] " confirm
+        if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+          while true; do
+            read -r -p "New quantity: " quantity
+            if [ -z "$quantity" ]; then quantity=1; fi
+            if [ "$quantity" -eq "$quantity" ] 2>/dev/null; then break; fi
+            echo "Quantity must be a number"
+          done
+          old_line="$container	$existing	$item"
+          new_line="$container	$quantity	$item"
+          awk -v l="$old_line" 'BEGIN{done=0} !done && $0==l {done=1; next} {print}' "$filename" > "$filename.tmp" && echo "$new_line" >> "$filename.tmp" && mv "$filename.tmp" "$filename"
+        fi
+        continue
+      fi
+
       while true; do
         read -r -p "Quantity: " quantity
         if [ -z "$quantity" ]; then
