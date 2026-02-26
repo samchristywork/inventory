@@ -78,7 +78,7 @@ case "$1" in
   show)
     cut -f1 "$filename" | sort | uniq | while read -r container; do
       echo "$container"
-      awk -F'\t' -v c="$container" '$1 == c {qty[$3] += $2} END {for (item in qty) print qty[item], item}' "$filename" | sort | while read -r line; do
+      awk -F'\t' -v c="$container" '$1 == c {qty[$3] += $2} END {for (item in qty) print qty[item], item}' "$filename" | sort -k1,1n -k2 | while read -r line; do
         echo "  $line"
       done
     done
