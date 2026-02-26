@@ -103,9 +103,7 @@ case "$1" in
     container=$(echo "$line" | cut -f1)
     item=$(echo "$line" | cut -f3)
     new_line="$container	$quantity	$item"
-    awk -v l="$line" 'BEGIN{done=0} !done && $0==l {done=1; next} {print}' "$filename" > "$filename.tmp"
-    echo "$new_line" >> "$filename.tmp"
-    mv "$filename.tmp" "$filename"
+    awk -v l="$line" 'BEGIN{done=0} !done && $0==l {done=1; next} {print}' "$filename" > "$filename.tmp" && echo "$new_line" >> "$filename.tmp" && mv "$filename.tmp" "$filename"
     ;;
   move)
     line=$(fzf < "$filename")
@@ -122,9 +120,7 @@ case "$1" in
     quantity=$(echo "$line" | cut -f2)
     item=$(echo "$line" | cut -f3)
     new_line="$new_container	$quantity	$item"
-    awk -v l="$line" 'BEGIN{done=0} !done && $0==l {done=1; next} {print}' "$filename" > "$filename.tmp"
-    echo "$new_line" >> "$filename.tmp"
-    mv "$filename.tmp" "$filename"
+    awk -v l="$line" 'BEGIN{done=0} !done && $0==l {done=1; next} {print}' "$filename" > "$filename.tmp" && echo "$new_line" >> "$filename.tmp" && mv "$filename.tmp" "$filename"
     ;;
   remove)
     line=$(fzf < "$filename")
