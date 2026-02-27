@@ -2,6 +2,15 @@
 
 ## Overview
 
+Inventory is a Bash script for tracking physical items stored in named
+containers. Items are recorded with a container name, quantity, and description
+in a plain TSV file at `~/.inventory`. A separate checkout log at
+`~/.inventory_checkout` tracks which items have been borrowed and returned.
+
+Interactive subcommands use `fzf` for fuzzy selection, making it fast to find
+and act on items without typing exact names. Non-interactive modes (search with
+an argument, export, import) work well in scripts and pipelines.
+
 ## Features
 
 ## Usage
