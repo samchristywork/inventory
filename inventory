@@ -242,6 +242,9 @@ with open(sys.argv[1], newline='') as f:
                 print(f"Skipping invalid quantity: {row}")
 PYEOF
     ;;
+  sort)
+    sort -t $'\t' -k1,1 -k3,3 "$filename" > "$filename.tmp" && mv "$filename.tmp" "$filename"
+    ;;
   edit)
     ${EDITOR:-vi} "$filename"
     ;;
@@ -262,6 +265,7 @@ PYEOF
     echo "  status - Show currently checked out items"
     echo "  export - Export inventory as CSV or JSON"
     echo "  import - Import inventory from a CSV file"
+    echo "  sort - Sort the inventory by container then item"
     echo "  edit - Edit the inventory"
     ;;
   *)
