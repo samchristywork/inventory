@@ -29,6 +29,27 @@ an argument, export, import) work well in scripts and pipelines.
 
 ## Usage
 
+```
+Usage: inventory <command>
+Commands:
+  add        - Add an item to the inventory
+  checkout   - Checkout an item from the inventory
+  containers - List all containers
+  search     - Search the inventory
+  count      - Count the number of items in the inventory
+  show       - Show the inventory
+  update     - Update the quantity of an item
+  move       - Move an item to a different container
+  remove     - Remove an item from the inventory
+  rename     - Rename a container
+  history    - Show checkout history
+  status     - Show currently checked out items
+  export     - Export inventory as CSV or JSON
+  import     - Import inventory from a CSV file
+  sort       - Sort the inventory by container then item
+  edit       - Edit the inventory
+```
+
 ## Installation
 
 ## Dependencies
