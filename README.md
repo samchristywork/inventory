@@ -13,6 +13,20 @@ an argument, export, import) work well in scripts and pipelines.
 
 ## Features
 
+- Add items to named containers with quantities
+- Duplicate detection on `add` with offer to update quantity in place
+- Interactive item selection via `fzf` for checkout, update, move, and remove
+- `show` displays items grouped by container with summed quantities
+- `search` supports both interactive fzf mode and non-interactive grep mode
+- `checkout` / `status` / `history` track item loans and returns
+- `rename` renames all entries for a container in one operation
+- `move` reassigns an item to a different container
+- `sort` sorts the inventory file in place by container then item name
+- `export` produces RFC 4180-compliant CSV or JSON output
+- `import` reads CSV files using Python's csv module for correct quoting
+- `count` reports both entry count and total summed quantity
+- Tab-completion scripts for bash and fish in `completions/`
+
 ## Usage
 
 ## Installation
