@@ -52,6 +52,22 @@ Commands:
 
 ## Installation
 
+Copy the script to a directory on your `PATH`:
+
+```
+cp inventory ~/.local/bin/
+```
+
+Optionally install tab completions:
+
+```
+# fish
+cp completions/inventory.fish ~/.config/fish/completions/
+
+# bash (add to .bashrc)
+source /path/to/completions/inventory.bash
+```
+
 ## Dependencies
 
 ## License
